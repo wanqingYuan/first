@@ -1,0 +1,8 @@
+org\example\daomain\Member.class
+org\example\daomain\Product.class
+org\example\daomain\Role.class
+org\example\daomain\Traveller.class
+org\example\daomain\SysLog.class
+org\example\daomain\UserInfo.class
+org\example\daomain\Permission.class
+org\example\daomain\Order.class

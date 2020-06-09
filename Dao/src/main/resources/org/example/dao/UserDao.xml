@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--        这里的namespace不能省略，必须要使用全限定类名-->
+<mapper namespace="org.example.dao.UserDao">
+    <resultMap id="userInfo" type="UserInfo">
+        <id property="id" column="id"></id>
+        <result property="username" column="username"></result>
+        <result property="email" column="email"></result>
+        <result property="password" column="password"></result>
+        <result property="phoneNum" column="phoneNum"></result>
+        <result property="status" column="status"></result>
+        <collection property="roles" column="id" ofType="Role"
+                    select="org.example.dao.RoleDao.findRoleByUserId"></collection>
+    </resultMap>
+    <select id="findByUsername" parameterType="String" resultMap="userInfo" >
+        select * from users where username=#{username}
+    </select>
+    <select id="findById" parameterType="int" resultMap="userInfo">
+        SELECT * from users where id=#{id}
+    </select>
+    <select id="findAll" resultType="UserInfo">
+        select * from users
+    </select>
+    <insert id="save" parameterType="UserInfo">
+        INSERT INTO users(email,username,password,phoneNum,status) VALUES(#{email},#{username},#{password},#{phoneNum},#{status});
+    </insert>
+    <insert id="addRoleToUser" parameterType="int">
+        insert into users_role(userId,roleId) values (#{userId},#{roleId})
+    </insert>
+</mapper>

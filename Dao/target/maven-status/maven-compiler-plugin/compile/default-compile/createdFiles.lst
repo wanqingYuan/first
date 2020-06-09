@@ -1,0 +1,8 @@
+org\example\dao\RoleDao.class
+org\example\dao\UserDao.class
+org\example\dao\OrderDao.class
+org\example\dao\PermissionDao.class
+org\example\dao\TravellerDao.class
+org\example\dao\MemberDao.class
+org\example\dao\ProductDao.class
+org\example\dao\SysLogDao.class

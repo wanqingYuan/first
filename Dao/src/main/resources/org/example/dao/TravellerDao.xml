@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--        这里的namespace不能省略，必须要使用全限定类名-->
+<mapper namespace="org.example.dao.TravellerDao">
+
+    <select id="findByOrderId" parameterType="int" resultType="Traveller">
+        SELECT * FROM traveller WHERE id IN
+         ( SELECT travellerId FROM order_traveller WHERE orderId=#{orderId} )
+    </select>
+
+</mapper>

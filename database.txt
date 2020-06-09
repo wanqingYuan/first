@@ -1,0 +1,202 @@
+产品
+create table product(
+	id int not null auto_increment primary key,
+	productNum varchar(50) not null,
+	productName varchar(50),
+	cityName varchar(50),
+	DepartureTime timestamp,
+	productPrice  decimal(10,2),
+	productDesc varchar(500),
+	productStatus int,
+	constraint product UNIQUE (id,productNum)
+)
+
+insert into PRODUCT (productnum, productname, cityname, departuretime, productprice, productdesc, productstatus) 
+values ('itcast-002','北京三日游','北京','20201108000000',1200,'不错的旅行',1); 
+insert into PRODUCT (productnum, productname, cityname, departuretime, productprice, productdesc, productstatus) 
+values ('itcast-003','上海五日游','上海','20201001000000',1800,'魔都我来了',0);
+insert into PRODUCT (productnum, productname, cityname, departuretime, productprice, productdesc, productstatus) 
+values ('itcast-001','北京三日游','北京','20200901000000',1200,'不错的旅行',1);
+
+订单
+create table orders(
+	id int not null auto_increment primary key,
+	orderNum varchar(20) not null UNIQUE,
+	orderTime timestamp,
+	peopleCount int,
+	orderDesc varchar(500),
+	payType int,
+	orderStatus int,
+	productId int,
+	memberId int,
+	foreign key (productId) references product(id),
+	foreign key (memberId) references member(id)
+);
+
+UPDATE orders SET orderTime='20200601120000' WHERE id=1;
+
+insert into ORDERS (ordernum, ordertime, peoplecount, orderdesc, paytype, orderstatus, productid, memberid)
+values ('12345','202006011200', 2, '没什么', 0, 1,3,1);
+
+insert into ORDERS (ordernum, ordertime, peoplecount, orderdesc, paytype, orderstatus, productid, memberid)
+values ('54321','201911100900',2, '没什么', 0, 1,3,1);
+
+insert into ORDERS (ordernum, ordertime, peoplecount, orderdesc, paytype, orderstatus, productid, memberid)
+values ('67890','201906231225', 2, '没什么', 0, 1,3,1);
+
+insert into ORDERS (ordernum, ordertime, peoplecount, orderdesc, paytype, orderstatus, productid, memberid)
+values ('98765','201908231225', 2, '没什么', 0, 1, 3,1);
+
+insert into ORDERS (ordernum, ordertime, peoplecount, orderdesc, paytype, orderstatus, productid, memberid)
+values ('11111', '201906230925', 2, '没什么', 0, 1,1,1);
+
+insert into ORDERS (ordernum, ordertime, peoplecount, orderdesc, paytype, orderstatus, productid, memberid)
+values ('22222','201906211225', 2, '没什么', 0, 1,1,1);
+
+insert into ORDERS (ordernum, ordertime, peoplecount, orderdesc, paytype, orderstatus, productid, memberid)
+values ('33333','201907231225', 2, '没什么', 0, 1,1,1);
+
+insert into ORDERS (ordernum, ordertime, peoplecount, orderdesc, paytype, orderstatus, productid, memberid)
+values ('44444','201906231200', 2, '没什么', 0, 1,2,1);
+
+insert into ORDERS (ordernum, ordertime, peoplecount, orderdesc, paytype, orderstatus, productid, memberid)
+values ('55555','201906251125', 2, '没什么', 0, 1,2,1);
+
+
+会员
+create table member(
+	id int not null auto_increment primary key,
+	name varchar(20),
+	nickname varchar(20),
+	phoneNum varchar(20),
+	email varchar(20)
+	
+)
+
+insert into MEMBER (name, nickname, phonenum, email)
+values ('张三', '小三', '18888888888', 'zs@163.com');
+
+旅客
+create table traveller(
+	id int not null auto_increment primary key,
+	name varchar(20),
+	sex varchar(20),
+	phoneNum varchar(20),
+	credentialsType int,
+	credentialsNum varchar(50),
+	travellerType int
+)
+
+insert into TRAVELLER (name, sex, phonenum, credentialstype, credentialsnum, travellertype)
+values ('张龙', '男', '13333333333', 0, '123456789009876543', 0);
+insert into TRAVELLER (id, name, sex, phonenum, credentialstype, credentialsnum, travellertype)
+values ('张小龙', '男', '15555555555', 0, '987654321123456789', 1);
+
+订单与旅客中间表
+CREATE TABLE order_traveller(
+  orderId int,
+  travellerId int,
+  PRIMARY KEY (orderId,travellerId),
+  FOREIGN KEY (orderId) REFERENCES orders(id) on delete cascade on update cascade,
+  FOREIGN KEY (travellerId) REFERENCES traveller(id) on delete cascade on update cascade
+)
+
+ALTER TABLE order_traveller DROP FOREIGN KEY order_traveller_ibfk_1;
+ALTER TABLE order_traveller DROP FOREIGN KEY order_traveller_ibfk_2;
+
+
+insert into ORDER_TRAVELLER (orderid, travellerid)
+values (1,1);
+insert into ORDER_TRAVELLER (orderid, travellerid)
+values (9,2);
+insert into ORDER_TRAVELLER (orderid, travellerid)
+values (2,2);
+insert into ORDER_TRAVELLER (orderid, travellerid)
+values (3,1);
+insert into ORDER_TRAVELLER (orderid, travellerid)
+values (4,2);
+insert into ORDER_TRAVELLER (orderid, travellerid)
+values (5,2);
+insert into ORDER_TRAVELLER (orderid, travellerid)
+values (6,1);
+insert into ORDER_TRAVELLER (orderid, travellerid)
+values (7,1);
+insert into ORDER_TRAVELLER (orderid, travellerid)
+values (8,2);
+ 
+use ssmcase01;
+select * from orders,product where orders.productId=product.id;
+
+
+用户表
+CREATE TABLE users(
+id int not null auto_increment PRIMARY KEY,
+email varchar(50) UNIQUE NOT NULL,
+username varchar(50),
+password varchar(50),
+phoneNum varchar(20),
+status INT //状态 0未开启 1开启
+);
+INSERT INTO users(email,username,PASSWORD,phoneNum,STATUS) VALUES('zs@123.com','张三','123','12222222223',1);
+INSERT INTO users(email,username,PASSWORD,phoneNum,STATUS) VALUES('root@123.com','root','root','12222242223',1);
+
+角色表
+create table role(
+id int not null auto_increment PRIMARY KEY,
+roleName varchar(50),
+roleDesc varchar(50),
+);
+
+INSERT INTO role(roleName,roleDesc) VALUES('ROLE_USER','普通用户');
+INSERT INTO role(roleName,roleDesc) VALUES('ROLE_ADMIN','管理员');
+
+用户角色中间表
+create table users_role(
+userId INT,
+roleId int,
+primary key (userId,roleId),
+foreign key (userId) references users(id),
+foreign key (roleId) references role(id)
+);
+
+INSERT INTO users_role VALUES(1,1);
+INSERT INTO users_role VALUES(2,1);
+INSERT INTO users_role VALUES(2,2);
+
+资源全限表
+create table permission(
+id int not null auto_increment PRIMARY KEY,
+permissionName varchar(50),
+url varchar(50)
+);
+资源权限和角色的中间表
+create table role_permission(
+permissionId int,
+roleId INT,
+primary key (permissionId,roleId),
+foreign key (permissionId) references permission(id),
+foreign key (roleId) references role(id)
+);
+
+
+INSERT INTO permission(permissionName,url) VALUES('用户查询权限','/user/find*');
+INSERT INTO permission(permissionName,url) VALUES('订单查询权限','/orders/find*');
+INSERT INTO permission(permissionName,url) VALUES('修改权限','/*/save*');
+
+
+INSERT INTO role_permission(permissionId,roleId) VALUES(1,1);
+INSERT INTO role_permission(permissionId,roleId) VALUES(1,2);
+INSERT INTO role_permission(permissionId,roleId) VALUES(2,2);
+INSERT INTO role_permission(permissionId,roleId) VALUES(2,1);
+INSERT INTO role_permission(permissionId,roleId) VALUES(3,2);
+
+AOP日志
+create table sysLog(   
+ id int not null auto_increment PRIMARY KEY,    
+visitTime timestamp,    
+username varchar(50),    
+ip varchar(30),    
+url varchar(50),    
+executionTime int,    
+method varchar(200)
+ )

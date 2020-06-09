@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--        这里的namespace不能省略，必须要使用全限定类名-->
+<mapper namespace="org.example.dao.ProductDao">
+    <select id="findAll" resultType="Product">
+        select * from product
+    </select>
+    <insert id="save" parameterType="Product">
+        insert into PRODUCT (productNum, productname, cityname, departuretime, productprice, productdesc, productstatus)
+         values (#{productNum},#{productName},#{cityName},#{departureTime},#{productPrice},#{productDesc},#{productStatus});
+    </insert>
+    <select id="findById" parameterType="int" resultType="Product">
+        select * from product where id=#{id}
+    </select>
+    <delete id="delete" parameterType="int">
+        delete from product where id=#{id}
+    </delete>
+    <update id="open" parameterType="int">
+        update product set productStatus=1 where id=#{id}
+    </update>
+    <update id="close" parameterType="int">
+        update product set productStatus=0 where id=#{id}
+    </update>
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--        这里的namespace不能省略，必须要使用全限定类名-->
+<mapper namespace="org.example.dao.PermissionDao">
+    <select id="findByRoleId" parameterType="int" resultType="Permission">
+        select * from permission where id in (
+         select permissionId from role_permission where roleId=#{roleId}
+        )
+    </select>
+    <select id="findAll" resultType="Permission">
+        select * from permission
+    </select>
+    <insert id="save" parameterType="Permission">
+        insert into permission(permissionName,url) values (#{permissionName},#{url})
+    </insert>
+</mapper>

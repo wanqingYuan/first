@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--        这里的namespace不能省略，必须要使用全限定类名-->
+<mapper namespace="org.example.dao.OrderDao">
+    <resultMap id="orderFindAll" type="Order">
+        <id property="id" column="id"></id>
+        <result property="orderNum" column="orderNum"></result>
+        <result property="orderTime" column="orderTime"></result>
+        <result property="peopleCount" column="peopleCount"></result>
+        <result property="orderDesc" column="orderDesc"></result>
+        <result property="payType" column="payType"></result>
+        <result property="orderStatus" column="orderStatus"></result>
+        <association property="product" column="productId" javaType="Product">
+            <id property="id" column="productId"></id>
+            <result property="productNum" column="productNum"></result>
+            <result property="productName" column="productName"></result>
+            <result property="productPrice" column="productPrice"></result>
+        </association>
+    </resultMap>
+    <resultMap id="orderFindById" type="Order">
+        <id property="id" column="id"></id>
+        <result property="orderNum" column="orderNum"></result>
+        <result property="orderTime" column="orderTime"></result>
+        <result property="peopleCount" column="peopleCount"></result>
+        <result property="orderDesc" column="orderDesc"></result>
+        <result property="payType" column="payType"></result>
+        <result property="orderStatus" column="orderStatus"></result>
+        <association property="product" column="productId" javaType="Product"
+                        select="org.example.dao.ProductDao.findById">
+        </association>
+        <association property="member" column="memberId" javaType="Member"
+                     select="org.example.dao.MemberDao.findById">
+        </association>
+        <collection property="travellers" column="id" ofType="Traveller"
+                    select="org.example.dao.TravellerDao.findByOrderId">
+        </collection>
+    </resultMap>
+    <select id="findAll" resultMap="orderFindAll">
+        SELECT orders.*,product.productNum,product.productName,product.productPrice FROM orders,product WHERE orders.productId=product.id
+    </select>
+    <select id="findById" parameterType="int" resultMap="orderFindById">
+        select * from orders where orders.id=#{id}
+    </select>
+    <select id="findByOrderId" parameterType="String" resultMap="orderFindAll">
+        SELECT orders.*,product.productNum,product.productName,product.productPrice FROM orders,product
+         WHERE orders.productId=product.id and orders.orderNum like #{orderId}
+    </select>
+    <delete id="delete" parameterType="int">
+        delete from orders where id=#{id}
+    </delete>
+    <update id="open" parameterType="int">
+        update orders set orderStatus=1 where id=#{id}
+    </update>
+    <update id="close" parameterType="int">
+        update orders set orderStatus=0 where id=#{id}
+    </update>
+</mapper>
