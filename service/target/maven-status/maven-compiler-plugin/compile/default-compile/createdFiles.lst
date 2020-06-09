@@ -1,0 +1,12 @@
+org\example\service\ProductServiceImpl.class
+org\example\service\OrderServiceImpl.class
+org\example\service\RoleServiceImpl.class
+org\example\service\SysLogService.class
+org\example\service\UserServiceImpl.class
+org\example\service\RoleService.class
+org\example\service\SysLogServiceImpl.class
+org\example\service\OrderService.class
+org\example\service\ProductService.class
+org\example\service\UserService.class
+org\example\service\PermissionServiceImpl.class
+org\example\service\PermissionService.class
